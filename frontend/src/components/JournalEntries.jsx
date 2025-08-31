@@ -75,7 +75,7 @@ function JournalEntries({ journalEntries, ledgers, onAddEntry, onUpdateEntry, on
       const groups = {}
 
       entries.forEach((entry) => {
-        const key = `${entry.date}|${entry.description}`
+        const key = entry.id
         if (!groups[key]) {
           groups[key] = {
             id: entry.id,
@@ -221,7 +221,7 @@ function JournalEntries({ journalEntries, ledgers, onAddEntry, onUpdateEntry, on
                                             <td className="px-3 py-2 text-right">{formatCurrency(t.debit)}</td>
                                             <td className="px-3 py-2 text-right">
                                               {formatCurrency(t.openingBalance || 0)}
-                                            </td>{" "}
+                                            </td>
                                             {/* Show OB */}
                                           </tr>
                                         ))}

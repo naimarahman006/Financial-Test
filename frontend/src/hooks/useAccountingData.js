@@ -82,21 +82,36 @@ export const useAccountingData = () => {
      }
   };
 
-  const deleteJournalEntry = (id) => {
-    setJournalEntries((prev) => {
-      const exists = prev.some(entry => entry.id === id);
-      if (!exists) console.warn('Tried to delete non-existent entry:', id);
-      return prev.filter(entry => entry.id !== id);
-    });
-  };
+   const deleteJournalEntry = async (id) => {
+      try {
+        const deleteResponse = await axios.delete(
+          "http://localhost/Financial-Web-App/backend/journalsHandler.php",
+          {
+            data: { id },
+            headers: { "Content-Type": "application/json" }
+          }
+        );
+        console.log("Raw delete response:", deleteResponse);
+        fetchData();
+      } catch (error) {
+        console.error("Error deleting journal entry:", error);
+        alert("Failed to delete entry. Please try again.");
+      }
+   };
 
 
-  const updateJournalEntry = (updatedEntry) => {
-    setJournalEntries((prev) =>
-        prev.map((entry) =>
-            entry.id === updatedEntry.id ? updatedEntry : entry
-        )
-    );
+  const updateJournalEntry = async (entry) => {
+     if(entry.id === null){return}
+     try {
+          console.log('Updating journal entry:', entry);
+          const updateResponse = await axios.put('http://localhost/Financial-Web-App/backend/journalsHandler.php',{entry});
+          console.log("Raw Update response:", updateResponse);
+          fetchData();
+     }
+     catch (error) {
+          console.error("Error updating journal entry:", error);
+          alert("Failed to update entry. Please try again.");
+     }
   };
 
   const clearAllData = () => {
